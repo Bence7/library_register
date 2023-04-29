@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryRegisterAPI", "LibraryRegisterAPI\LibraryRegisterAPI.csproj", "{23CFE643-7A1F-40A5-A80B-0906843FE4C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryRegisterAPI", "LibraryRegisterAPI\LibraryRegisterAPI.csproj", "{23CFE643-7A1F-40A5-A80B-0906843FE4C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryClientApp", "LibraryClientApp\LibraryClientApp.csproj", "{0874BE52-D52A-4A5C-9DA0-A443E868D3B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryClientApp", "LibraryClientApp\LibraryClientApp.csproj", "{0874BE52-D52A-4A5C-9DA0-A443E868D3B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAdminApp", "LibraryAdminApp\LibraryAdminApp.csproj", "{0E84B8BD-795C-485B-A6D8-3DD1C72FC90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryAdminApp", "LibraryAdminApp\LibraryAdminApp.csproj", "{0E84B8BD-795C-485B-A6D8-3DD1C72FC90B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
