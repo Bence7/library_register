@@ -1,7 +1,31 @@
 ﻿@page "/members"
+@using LibraryAdminApp.Services
+@using LibraryAdminApp.Model
 
-<h3>Members</h3>
 
 @code {
-
+    Member member = new Member(new HttpClient(), "localhost");
 }
+
+<h3>Members</h3>
+<table class="table table-dark table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Birth of date</th>
+        <th>Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (MemberModel member in member.GetMembersAsync().Result)
+    {
+        <tr>
+            <td>@member.Id</td>
+            <td>@member.Name</td>
+            <td>@member.BirthDate</td>
+            <td>@member.Address</td>
+        </tr>
+    }
+    </tbody>
+</table>
