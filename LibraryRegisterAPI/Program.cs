@@ -1,5 +1,6 @@
 using LibraryEntityFramework;
 using LibraryRegisterAPI.Models;
+using LibraryRegisterAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSqlServer<LibraryDbContext>(builder.Configuration.GetConnectionString("LocalDB"));
+builder.Services.AddScoped<IEntityRepository<Book>, BookRepository>();
 
 var app = builder.Build();
 
