@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSqlServer<LibraryDbContext>(builder.Configuration.GetConnectionString("LocalDB"));
 builder.Services.AddScoped<IEntityRepository<Book>, BookRepository>();
+builder.Services.AddScoped<IEntityRepository<Member>, MemberRepository>();
 
 var app = builder.Build();
 
