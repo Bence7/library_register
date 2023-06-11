@@ -22,7 +22,7 @@ namespace LibraryRegisterAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("LibraryRegisterAPI.Models.Book", b =>
+            modelBuilder.Entity("LibraryRegisterAPI.Models.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace LibraryRegisterAPI.Migrations
                     b.ToTable("Book");
                 });
 
-            modelBuilder.Entity("LibraryRegisterAPI.Models.Member", b =>
+            modelBuilder.Entity("LibraryRegisterAPI.Models.Entities.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,8 +74,14 @@ namespace LibraryRegisterAPI.Migrations
                     b.ToTable("Member");
                 });
 
-            modelBuilder.Entity("LibraryRegisterAPI.Models.Rental", b =>
+            modelBuilder.Entity("LibraryRegisterAPI.Models.Entities.Rental", b =>
                 {
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -88,12 +94,33 @@ namespace LibraryRegisterAPI.Migrations
                     b.Property<DateTime>("RentalStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RentalStatus")
-                        .HasColumnType("int");
+                    b.Property<bool>("RentalStatus")
+                        .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("MemberId", "BookId");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Rental");
+                });
+
+            modelBuilder.Entity("LibraryRegisterAPI.Models.Entities.Rental", b =>
+                {
+                    b.HasOne("LibraryRegisterAPI.Models.Entities.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryRegisterAPI.Models.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Member");
                 });
 #pragma warning restore 612, 618
         }
