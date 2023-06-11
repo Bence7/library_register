@@ -1,6 +1,9 @@
 using LibraryEntityFramework;
 using LibraryRegisterAPI.Models;
+using LibraryRegisterAPI;
+using LibraryRegisterAPI.Models.Entities;
 using LibraryRegisterAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSqlServer<LibraryDbContext>(builder.Configuration.GetConnectionString("LocalDB"));
 builder.Services.AddScoped<IEntityRepository<Book>, BookRepository>();
 builder.Services.AddScoped<IEntityRepository<Member>, MemberRepository>();
+builder.Services.AddScoped<IEntityRepository<Rental>, RentalRepository>();
 
 var app = builder.Build();
 
