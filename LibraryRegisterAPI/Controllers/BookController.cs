@@ -1,10 +1,12 @@
-﻿using LibraryRegisterAPI.Models;
+﻿using LibraryRegisterAPI.Models.Requests;
 using LibraryEntityFramework;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using LibraryRegisterAPI.Repositories;
+using LibraryRegisterAPI.Models.Entities;
+using AutoMapper;
 
 namespace LibraryEntityFramework.Controllers
 {
@@ -12,22 +14,38 @@ namespace LibraryEntityFramework.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        IEntityRepository<Book> _repository;
+        private readonly BookRepository _repository;
+        private readonly IMapper _mapper;
 
-        public BookController(IEntityRepository<Book> repository)
+        public BookController(IEntityRepository<Book> repository, IMapper mapper)
         {
-            _repository = repository;
+            _repository = (BookRepository)repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> Get()
+        public async Task<ActionResult<IEnumerable<BookRequest>>> Get()
         {
             var books = await _repository.GetAll();
             return Ok(books);
         }
 
+        [HttpGet("Available")]
+        public async Task<ActionResult<IEnumerable<BookRequest>>> GetAvailables()
+        {
+            var books = await _repository.GetAvailable();
+            return Ok(books);
+        }
+
+        [HttpGet("Unavailable")]
+        public async Task<ActionResult<IEnumerable<BookRequest>>> GetUnavailable()
+        {
+            var books = await _repository.GetUnavailable();
+            return Ok(books);
+        }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> Get(int id)
+        public async Task<ActionResult<BookRequest>> Get(int id)
         {
             var book = await _repository.Get(id);
 
@@ -53,15 +71,17 @@ namespace LibraryEntityFramework.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Book book)
+        public async Task<IActionResult> Post([FromBody] BookRequest book)
         {
-            await _repository.Add(book);
+            var entity = _mapper.Map<Book>(book);
+
+            await _repository.Add(entity);
 
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id,[FromBody] Book book)
+        public async Task<IActionResult> Put(int id,[FromBody] BookRequest book)
         {
             if (id != book.Id)
             {
@@ -75,7 +95,8 @@ namespace LibraryEntityFramework.Controllers
                 return NotFound();
             }
 
-            await _repository.Update(id, book);
+            var entity = _mapper.Map<Book>(book);
+            await _repository.Update(id, entity);
 
             return Ok();
         }
