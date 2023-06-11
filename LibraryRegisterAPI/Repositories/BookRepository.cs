@@ -1,7 +1,7 @@
 ﻿namespace LibraryRegisterAPI.Repositories
 {
     using LibraryEntityFramework;
-    using LibraryRegisterAPI.Models;
+    using LibraryRegisterAPI.Models.Entities;
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,7 @@
     {
         private readonly LibraryDbContext dbContext;
 
-        /// <summary>
+        /// <summary >
         /// Initializes a new instance of the <see cref="BookRepository"/> class.
         /// </summary>
         /// <param name="dbContext">The database context for accessing the book entities.</param>
@@ -133,6 +133,37 @@
             }
         }
 
+        public async Task<IEnumerable<Book>> GetAvailable()
+        {
+            try
+            {
+                var availableBooks = await dbContext.Book
+                                            .Where(b => !dbContext.Rental.Any(r => r.BookId == b.Id && r.RentalStatus))
+                                            .ToListAsync();
+                return availableBooks;
+            }
+            catch (Exception ex)
+            {
+                // TODO (Serilog): Hiba
+                return Enumerable.Empty<Book>();
+            }
+        }
+
+        public async Task<IEnumerable<Book>> GetUnavailable()
+        {
+            try
+            {
+                var availableBooks = await dbContext.Book
+                                            .Where(b => dbContext.Rental.Any(r => r.BookId == b.Id && r.RentalStatus))
+                                            .ToListAsync();
+                return availableBooks;
+            }
+            catch (Exception ex)
+            {
+                // TODO (Serilog): Hiba
+                return Enumerable.Empty<Book>();
+            }
+        }
 
         /// <summary>
         /// Updates the details of a book in the database.
