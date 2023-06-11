@@ -1,7 +1,7 @@
 ﻿namespace LibraryRegisterAPI.Repositories
 {
     using LibraryEntityFramework;
-    using LibraryRegisterAPI.Models;
+    using LibraryRegisterAPI.Models.Entities;
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
 
@@ -109,6 +109,13 @@
         public async Task<Member> Get(int id)
         {
             var member = await this.dbContext.Member.FindAsync(id);
+
+            return member!;
+        }
+
+        public async Task<Member> FindByName(string name)
+        {
+            var member = await this.dbContext.Member.FirstOrDefaultAsync(m => m.Name == name);
 
             return member!;
         }
