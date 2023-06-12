@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryAdminApp", "LibraryA
 		{D6F78E5E-995D-42BC-ABC0-84350732DB00} = {D6F78E5E-995D-42BC-ABC0-84350732DB00}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{D6F78E5E-995D-42BC-ABC0-84350732DB00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{D6F78E5E-995D-42BC-ABC0-84350732DB00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

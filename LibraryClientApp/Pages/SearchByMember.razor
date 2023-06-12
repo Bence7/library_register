@@ -1,0 +1,53 @@
+﻿@page "/user"
+@using ClassLibrary.Models;
+@using LibraryClientApp.Service
+
+@inject IMemberService MemberService
+
+@if (user == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Add meg a felhasználó neved!</h3>
+    <div>
+        <input @bind="username" type="text" placeholder="Írd be a felhasználónevet..." />
+        <button @onclick="GetUser">Keres</button>
+    </div>
+
+    <!--
+    <h3>Kölcsönzött könyvek: @username</h3>
+    <ul>
+    @foreach (var book in user.BorrowedBooks)
+    {
+            <li>
+                Cím: @book.Title <br />
+                Kikölcsönzés dátuma: @book.BorrowDate <br />
+                Vissza kell hozni: @book.DueDate
+            </li>
+    }
+    </ul>
+    <p>Aktív kölcsönzések száma: @user.BorrowedBooks.Count</p>
+       -->
+}
+
+@code {
+    string username;
+    MemberModel user;
+    string errorMessage;
+
+    private async Task GetUser()
+    {
+        try
+        {
+            user = await MemberService.GetUserByUsernameAsync(username);
+            errorMessage = null;
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "Nincs ilyen név a nyilvántartásban.";
+            user = null;
+        }
+    }
+}

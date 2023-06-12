@@ -1,0 +1,43 @@
+﻿@page "/books"
+@using ClassLibrary.Models
+@using LibraryClientApp.Service
+@inject IBookService BookService
+
+
+@if (Books is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Book List</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>PublishDate</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Publisher</td>
+                    <td>@book.PublishDate</td>
+                    <td><a href="book/@book.Id" class="btn btn-primary">Details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<BookModel>? Books { get; set; }
+
+    protected override async Task OnInitializedAsync() => Books = await BookService.GetAllBookAsync();
+}

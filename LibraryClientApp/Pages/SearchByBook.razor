@@ -1,0 +1,52 @@
+﻿@page "/book"
+@using LibraryClientApp.Service
+@using ClassLibrary.Models;
+@inject IBookService BookService
+
+<h3>Keresés könyvcím alapján</h3>
+
+<div>
+    <input @bind="bookName" type="text" placeholder="Írd be a könyv címét..." />
+    <button @onclick="GetBook">Keres</button>
+</div>
+
+@if (book == null)
+{
+    <p>@errorMessage</p>
+}
+else
+{
+    <h3>A könyv adatai:</h3>
+    <p>
+        Title: @book.Title <br />
+        Author: @book.Author <br />
+        PublishDate: @book.PublishDate
+    </p>
+}
+
+@code {
+    string bookName;
+    BookModel book;
+    string errorMessage;
+
+    private async Task GetBook()
+    {
+        try
+        {
+            book = await BookService.GetBookByNameAsync(bookName);
+            if (book == null)
+            {
+                errorMessage = "Nincs ilyen című könyv a nyilvántartásban.";
+            }
+            else
+            {
+                errorMessage = null;
+            }
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "Hiba történt a szerver oldali kommunikáció során.";
+            book = null;
+        }
+    }
+}

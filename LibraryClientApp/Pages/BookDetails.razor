@@ -1,0 +1,30 @@
+﻿@page "/book/{id:int}"
+@using ClassLibrary.Models
+@using LibraryClientApp.Service
+@inject IBookService BookService
+
+@if (BookModel is null)
+{
+        <p>Loading...</p>
+}
+else
+{
+        <h3>@BookModel.Title's details</h3>
+
+        <p>Title: @BookModel.Title</p>
+        <p>Author: @BookModel.Author</p>
+        <p>Publisher: @BookModel.Publisher</p>
+        <p>PublishDate: @BookModel.PublishDate</p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookModel? BookModel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BookModel = await BookService.GetBookByIdAsync(Id);
+    }
+}
