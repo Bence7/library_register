@@ -1,7 +1,9 @@
 ﻿@page "/book/{id:int}"
 @using ClassLibrary.Models
 @using LibraryClientApp.Service
+@using System.Net;
 @inject IBookService BookService
+@inject IRentalService RentalService
 
 @if (BookModel is null)
 {
@@ -15,6 +17,16 @@ else
         <p>Author: @BookModel.Author</p>
         <p>Publisher: @BookModel.Publisher</p>
         <p>PublishDate: @BookModel.PublishDate</p>
+    @if (RentalModel != null &&  RentalModel.RentalStatus)
+    {
+        <p><strong>This book is currently rented out.</strong></p>
+        <p>Rented by: @RentalModel.Member.Name</p>
+        <p>Rental ends on: @RentalModel.RentalEndDate</p>
+    }
+    else
+    {
+        <p><strong>This book is currently available.</strong></p>
+    }
 }
 
 @code {
@@ -22,9 +34,18 @@ else
     public int Id { get; set; }
 
     private BookModel? BookModel { get; set; }
+    private RentalModel? RentalModel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         BookModel = await BookService.GetBookByIdAsync(Id);
+        try
+        {
+            RentalModel = await RentalService.GetRentalByBookIdAsync(Id);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            RentalModel = null;
+        }
     }
 }
