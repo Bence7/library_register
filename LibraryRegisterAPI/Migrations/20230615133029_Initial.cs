@@ -44,17 +44,17 @@ namespace LibraryRegisterAPI.Migrations
                 name: "Rental",
                 columns: table => new
                 {
-                    MemberId = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RentalStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RentalEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RentalStatus = table.Column<bool>(type: "bit", nullable: false)
+                    RentalStatus = table.Column<bool>(type: "bit", nullable: false),
+                    MemberId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rental", x => new { x.MemberId, x.BookId });
+                    table.PrimaryKey("PK_Rental", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Rental_Book_BookId",
                         column: x => x.BookId,
@@ -73,6 +73,11 @@ namespace LibraryRegisterAPI.Migrations
                 name: "IX_Rental_BookId",
                 table: "Rental",
                 column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rental_MemberId",
+                table: "Rental",
+                column: "MemberId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

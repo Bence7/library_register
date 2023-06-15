@@ -76,17 +76,17 @@ namespace LibraryRegisterAPI.Migrations
 
             modelBuilder.Entity("LibraryRegisterAPI.Models.Entities.Rental", b =>
                 {
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RentalEndDate")
                         .HasColumnType("datetime2");
@@ -97,9 +97,11 @@ namespace LibraryRegisterAPI.Migrations
                     b.Property<bool>("RentalStatus")
                         .HasColumnType("bit");
 
-                    b.HasKey("MemberId", "BookId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Rental");
                 });
