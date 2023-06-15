@@ -135,6 +135,27 @@
             return rental!;
         }
 
+        public async Task<Rental> GetDetailedByBookId(int bookId)
+        {
+            var rental = await dbContext.Rental
+                            .Include(r => r.Member)
+                            .Include(r => r.Book)
+                            .FirstOrDefaultAsync(r => r.BookId == bookId);
+
+            return rental!;
+        }
+
+        public async Task<IEnumerable<Rental>> GetAllDetailedByMemberId(int memberId)
+        {
+            var rental = await dbContext.Rental
+                            .Include(r => r.Member)
+                            .Include(r => r.Book)
+                            .Where(r => r.MemberId == memberId)
+                            .ToListAsync();
+
+            return rental!;
+        }
+
         public async Task<bool> Update(int id, Rental entity)
         {
             try

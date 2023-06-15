@@ -61,6 +61,32 @@ namespace LibraryRegisterAPI.Controllers
             return Ok(rental);
         }
 
+        [HttpGet("Detailed/BookId/{bookId}")]
+        public async Task<ActionResult<RentalRequest>> GetDetailedByBookId(int bookId)
+        {
+            var rental = await _repository.GetDetailedByBookId(bookId);
+
+            if (rental is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(rental);
+        }
+
+        [HttpGet("Detailed/MemberId/{memberId}")]
+        public async Task<ActionResult<RentalRequest>> GetDetailedAllByMemberId(int memberId)
+        {
+            var rental = await _repository.GetAllDetailedByMemberId(memberId);
+
+            if (rental is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(rental);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
