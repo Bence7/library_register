@@ -9,6 +9,7 @@
 @code {
     private IEnumerable<BookModel>? availableBooks { get; set; }
     private IEnumerable<MemberModel>? allMember { get; set; }
+    private int counter { get; set; } = 0;
     protected override async Task OnInitializedAsync()
     {
         availableBooks = await BookService.availableBookAsync();
@@ -22,6 +23,10 @@
 }
 else
 {
+        counter = allMember.Count();
+
+        if (counter > 0)
+        {
     <table class="table table-dark table-striped">
         <thead>
         <tr>
@@ -42,9 +47,14 @@ else
                 <td>@book.Author</td>
                 <td>@book.Publisher</td>
                 <td>@book.PublishDate</td>
-                <td><a href="/giveoutabook/members" class="btn btn-dark">GIVE</a></td>
+                <td><a href="/giveoutabook/@book.Id/members" class="btn btn-dark">GIVE</a></td>
             </tr>
         }
         </tbody>
     </table>
+        }
+        else
+        {
+            <p>There are no members in the library yet.</p>
+        }
 }

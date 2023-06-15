@@ -1,18 +1,21 @@
-﻿@page "/giveoutabook/members"
+﻿@page "/giveoutabook/{id:int}/members"
 @using ClassLibrary.Models
 @using LibraryAdminApp.Services
 @inject IMemberService MemberService
 @inject IRentService RentService
 @inject NavigationManager NavigationManager
 
-<h3>Give out books</h3>
+<h3>Select a person</h3>
 
 @code
 { 
     [Parameter]
     public int Id { get; set; }
-    private RentalModel? rental { get; set; }
+
+    private RentalModel Rental { get; set; } = new();
+    
     private IEnumerable<MemberModel>? allMember { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
         allMember = await MemberService.getAllMemberAsync();
@@ -20,13 +23,14 @@
 
     private async Task ValidateAsync(int memberId, int bookId)
     {
-        rental.RentalStartDate=DateTime.Now;
-        rental.RentalEndDate=DateTime.Today.AddDays(30);
-        rental.RentalStatus = true;
-        rental.MemberId = memberId;
-        rental.BookId = bookId;
-        NavigationManager.NavigateTo("/");
-        await RentService.AddRentalAsync(rental);
+        Rental.RentalStatus = true;
+        Rental.RentalStartDate = DateTime.Today;
+        Rental.RentalEndDate = DateTime.Today.AddDays(30);
+        Rental.MemberId = memberId;
+        Rental.BookId = bookId;
+        await RentService.AddRentalAsync(Rental);
+        GetBack.counter++;
+        NavigationManager.NavigateTo("/giveoutabook", forceLoad:true);
     }
 }
 
@@ -52,9 +56,14 @@ else
                 <td>@member.Name</td>
                 <td>@member.BirthDate</td>
                 <td>@member.Address</td>
-                <td><button onclick="@ValidateAsync(@member.Id, Id)">SELECT</button></td>
+                <td>
+                    <button @onclick="(()=> ValidateAsync(member.Id, Id))" class="btn btn-dark">SELECT</button>
+                </td>
             </tr>
         }
         </tbody>
     </table>
+    
+
 }
+<a href="/giveoutabook" class="btn btn-dark">BACK</a>

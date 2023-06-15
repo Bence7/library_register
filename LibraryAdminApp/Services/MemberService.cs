@@ -21,4 +21,6 @@ public class MemberService : IMemberService
 
     public async Task AddMemberAsync(MemberModel member) => 
         await _httpClient.PostAsJsonAsync("/api/Member", member);
+
+    public Task DeleteMemberAsync(int id) => _httpClient.DeleteAsync($"/api/Member/{id}");
 }

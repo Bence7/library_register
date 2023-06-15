@@ -8,4 +8,5 @@ public interface IMemberService
     Task<MemberModel?> getMemberByIdAsync(int id);
     Task UpdateMemberAsync(int id, MemberModel member);
     Task AddMemberAsync(MemberModel member);
+    Task DeleteMemberAsync(int id);
 }

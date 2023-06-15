@@ -24,11 +24,15 @@ else
             <label class="form-label">Address</label>
             <InputText @bind-Value="@member.Address" class="form-control"/> 
         </div>
-        <button type="submit">Edit</button>
+        <div>
+            <button type="submit" class="btn btn-dark">EDIT</button>
+        </div>
     </EditForm>
-    
-    <a href="/members" class="btn btn-dark">BACK</a>
-}
+    <div>
+        <button onclick="@DeleteMemberAsync" class="btn btn-dark">DELETE</button>
+        <a href="/members" class="btn btn-dark">BACK</a>
+    </div>
+    }
 
 @code {
     [Parameter]
@@ -44,6 +48,11 @@ else
     private async Task ValidateAsync()
     {
         await MemberService.UpdateMemberAsync(Id, member!);
+        NavigationManager.NavigateTo("/members");
+    }
+    private async Task DeleteMemberAsync()
+    {
+        await MemberService.DeleteMemberAsync(Id);
         NavigationManager.NavigateTo("/members");
     }
 
