@@ -9,4 +9,7 @@ public interface IRentService
     Task AddRentalAsync(RentalModel rental);
 
     Task DeleteRentalAsync(int id);
+    
+    Task UpdateRentAsync(int id, RentalModel rental);
+    Task<IEnumerable<RentalModel>?> getRentalByMemberIdAsync(int memberId);
 }
