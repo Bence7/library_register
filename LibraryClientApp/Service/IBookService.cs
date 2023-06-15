@@ -6,6 +6,8 @@ namespace LibraryClientApp.Service
     {
         Task<IEnumerable<BookModel>?> GetAllBookAsync();
         Task<BookModel?> GetBookByIdAsync(int id);
-        Task<BookModel?> GetBookByNameAsync(string name);
+
+        public Task<IEnumerable<BookModel>?> GetAvailableBooksAsync();
+       // Task<BookModel?> GetBookByNameAsync(string name);
     }
 }
