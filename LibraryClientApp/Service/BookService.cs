@@ -11,11 +11,12 @@ namespace LibraryClientApp.Service
         public BookService(HttpClient httpClient) => this._httpClient = httpClient;
 
         public Task<IEnumerable<BookModel>?> GetAllBookAsync() =>
-            this._httpClient.GetFromJsonAsync<IEnumerable<BookModel>>("api/books");
+            this._httpClient.GetFromJsonAsync<IEnumerable<BookModel>>("api/Book");
+
+        public Task<IEnumerable<BookModel>?> GetAvailableBooksAsync() =>
+            this._httpClient.GetFromJsonAsync<IEnumerable<BookModel>>("api/Book/Available");
 
         public Task<BookModel?> GetBookByIdAsync(int id) =>
-            this._httpClient.GetFromJsonAsync<BookModel?>($"api/books/{id}");
-
-        public Task<BookModel?> GetBookByNameAsync(string name) => this._httpClient.GetFromJsonAsync<BookModel?>($"api/books/ByName/{name}");
+            this._httpClient.GetFromJsonAsync<BookModel?>($"api/Book/{id}");
     }
 }

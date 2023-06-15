@@ -10,6 +10,6 @@ namespace LibraryClientApp.Service
         public MemberService(HttpClient httpClient) => this._httpClient = httpClient;
 
         public Task<MemberModel?> GetUserByUsernameAsync(string username) =>
-            this._httpClient.GetFromJsonAsync<MemberModel?>($"api/member/Name/{username}");
+            this._httpClient.GetFromJsonAsync<MemberModel?>($"api/Member/Name/{username}");
     }
 }
