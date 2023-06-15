@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">LibraryAdminApp</a>
+        <a class="navbar-brand" href="/members">LibraryAdminApp</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -16,9 +16,14 @@
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="addnewmember">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Add new member
+                <span class="oi oi-plus" aria-hidden="true"></span> Add new member
             </NavLink>
         </div>
+        <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="addnewbook">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Add new book
+                    </NavLink>
+                </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="books">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Query books
@@ -26,7 +31,7 @@
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="giveoutabook">
-                <span class="oi oi-plus" aria-hidden="true"></span> Give out a book
+                <span class="oi oi-minus" aria-hidden="true"></span> Give out a book
             </NavLink>
         </div>
         <div class="nav-item px-3">

@@ -2,6 +2,8 @@
 @using ClassLibrary.Models
 @using LibraryAdminApp.Services
 @inject IRentService RentService
+@inject IBookService BookService
+@inject NavigationManager NavigationManager
 
 <h3>Accessibility</h3>
 
@@ -15,6 +17,11 @@
     protected override async Task OnInitializedAsync()
     {
         allRent = await RentService.getAllRentsAsync();
+    }
+    private async Task DeleteBookAsync()
+    {
+        await BookService.DeleteBookAsync(Id);
+        NavigationManager.NavigateTo("/books");
     }
 }
 @if (allRent is null)
@@ -44,5 +51,5 @@ else
     }
     
 }
-
+<button onclick="@DeleteBookAsync" class="btn btn-dark">DELETE</button>
 <a href="/books" class="btn btn-dark">BACK</a>

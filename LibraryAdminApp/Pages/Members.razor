@@ -4,7 +4,8 @@
 @inject IMemberService MemberService
 
 @code
-{ 
+{
+    private int counter { get; set; } = 0;
     private IEnumerable<MemberModel>? allMember { get; set; }
     protected override async Task OnInitializedAsync()
     {
@@ -18,28 +19,36 @@
 }
 else
 {
-    <h3>Members</h3>
-    <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Birth of date</th>
-            <th>Address</th>
-            <th>Details</th>
-            <th>Rents</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var member in allMember)
-        {
+    counter = allMember.Count();
+
+    if (counter > 0)
+    {
+        <h3>Members</h3>
+        <table class="table table-dark table-striped">
+            <thead>
             <tr>
-                <td>@member.Name</td>
-                <td>@member.BirthDate</td>
-                <td>@member.Address</td>
-                <td><a href="members/details/@member.Id" class="btn btn-dark">Edit</a></td>
-                <td><a href="members/rents/@member.Id" class="btn btn-dark">See</a></td>
+                <th>Name</th>
+                <th>Birth of date</th>
+                <th>Address</th>
+                <th>Details</th>
+                <th>Rents</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var member in allMember)
+            {
+                <tr>
+                    <td>@member.Name</td>
+                    <td>@member.BirthDate</td>
+                    <td>@member.Address</td>
+                    <td><a href="members/details/@member.Id" class="btn btn-dark">EDIT</a></td>
+                    <td><a href="members/rents/@member.Id" class="btn btn-dark">SEE</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }else
+    {
+        <p>There are no members yet.</p>
+    }
 }

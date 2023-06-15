@@ -11,19 +11,22 @@
     <ValidationSummary />
     <div class="mb-3">
         <label class="form-label">Name</label>
-        <InputText @bind-Value="@member.Name" class="form-control"/>
+        <InputText placeholder="Full name"@bind-Value="@member.Name" class="form-control"/>
     </div>
     <div class="mb-3">
         <label class="form-label">Date of birth</label>
-        <InputDate @bind-Value="@member.BirthDate" class="form-control"/>
+        <InputDate min="1900-01-01" @bind-Value="@member.BirthDate" class="form-control"/>
     </div>
     <div class="mb-3">
         <label class="form-label">Address</label>
-        <InputText @bind-Value="@member.Address" class="form-control"/>
+        <InputText placeholder="Zip code, City, Street and number" @bind-Value="@member.Address" class="form-control"/>
     </div>
-    <button type="submit" class="btn btn-dark">Add</button>
+    <div>
+        <button type="submit" class="btn btn-dark">ADD</button>
+        <a href="/members" class="btn btn-dark">BACK</a>
+    </div>
 </EditForm>
-<a href="/members" class="btn btn-dark">BACK</a>
+
 
 @code {
     private MemberModel member { get; set; } = new();
