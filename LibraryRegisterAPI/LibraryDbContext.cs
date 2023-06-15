@@ -15,9 +15,6 @@ namespace LibraryEntityFramework
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Rental>()
-                .HasKey(r => new { r.MemberId, r.BookId });
-
-            modelBuilder.Entity<Rental>()
                 .HasOne(r => r.Member)
                 .WithMany()
                 .HasForeignKey(r => r.MemberId);

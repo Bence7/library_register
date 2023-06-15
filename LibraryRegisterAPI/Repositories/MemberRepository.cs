@@ -158,7 +158,9 @@
                     return false;
                 }
 
-                // TODO
+                member.Address = entity.Address;
+                member.BirthDate = entity.BirthDate;
+                member.Name = entity.Name;
 
                 await this.dbContext.SaveChangesAsync();
 
