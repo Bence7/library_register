@@ -1,0 +1,59 @@
+﻿@page "/members/rents/{id:int}"
+@using ClassLibrary.Models
+@using LibraryAdminApp.Services
+@inject IRentService RentService
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    
+    private IEnumerable<RentalModel>? allrent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        allrent = await RentService.getAllRentsAsync();
+    }
+}
+
+@if (allrent is null)
+    {
+        <p>Loading...</p>   
+    }
+    else
+    {
+        <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Rental Start Date</th>
+                <th>Rental End Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var rent in allrent)
+            {
+                if (@rent.MemberId.Equals(Id))
+                {
+                    <tr>
+                        <td>@rent.Book.Title</td>
+                        <td>@rent.Book.Author</td>
+                        <td>@rent.Book.Publisher</td>
+                        <td>@rent.RentalStartDate</td>
+                        <td>@rent.RentalEndDate</td>
+
+                        @if (@rent.RentalEndDate < DateTime.Now)
+                        {
+                            <td>Expired</td>
+                        }
+                        else
+                        {<td>Live</td>}
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    }
+<a href="/members" class="btn btn-dark">BACK</a>
