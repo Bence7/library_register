@@ -1,0 +1,49 @@
+﻿@page "/books"
+@using ClassLibrary.Models
+@inject HttpClient HttpClient
+
+@code
+{ 
+    
+    private IEnumerable<BookModel>? allBook { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        allBook = await HttpClient.GetFromJsonAsync<IEnumerable<BookModel>>("/api/Book");
+    }
+}
+
+<h1>Query books</h1>
+
+@if (allBook is null)
+{
+    <p>Loading...</p> 
+}
+else
+{
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Publish date</th>
+            <th>Accessibility</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in allBook)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Publisher</td>
+                <td>@book.PublishDate</td>
+                <td><a href="/books/accessibility/@book.Id" class="btn btn-dark">SEE</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+

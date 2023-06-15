@@ -1,0 +1,48 @@
+﻿@page "/books/accessibility/{id:int}"
+@using ClassLibrary.Models
+@using LibraryAdminApp.Services
+@inject IRentService RentService
+
+<h3>Accessibility</h3>
+
+@code {
+    public Boolean isRented { get; set; } = false;
+    [Parameter]
+    public int Id { get; set; }
+    
+    private IEnumerable<RentalModel>? allRent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        allRent = await RentService.getAllRentsAsync();
+    }
+}
+@if (allRent is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    
+    @foreach (var rent in allRent)
+    {
+        if (rent.BookId.Equals(Id))
+        {
+            <p>The book is rented by <a href="/members/details/@rent.MemberId">@rent.Member.Name</a></p>
+            <p>Rental end date is : @rent.RentalEndDate.Date</p>
+            @if (@rent.RentalEndDate < DateTime.Now)
+            {
+                <p>The rent is expired.</p>
+            }
+            else{<p>The rent is live.</p>}
+            isRented = true;
+        }
+    }
+    @if (!isRented)
+    {
+        <p>The book is available.</p>
+    }
+    
+}
+
+<a href="/books" class="btn btn-dark">BACK</a>

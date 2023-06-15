@@ -1,0 +1,50 @@
+﻿@page "/members/details/{id:int}"
+@using ClassLibrary.Models
+@using LibraryAdminApp.Services
+@inject IMemberService MemberService;
+@inject NavigationManager NavigationManager
+
+@if (member is null)
+{
+    <p>Loading...</p>   
+}
+else
+{
+    <h3>@member.Name's details</h3>
+    <EditForm Model="@member" OnValidSubmit="@ValidateAsync">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <InputText @bind-Value="@member.Name" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Date of birth</label>
+            <InputDate @bind-Value="@member.BirthDate" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <InputText @bind-Value="@member.Address" class="form-control"/> 
+        </div>
+        <button type="submit">Edit</button>
+    </EditForm>
+    
+    <a href="/members" class="btn btn-dark">BACK</a>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    
+    private MemberModel? member { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        member = await MemberService.getMemberByIdAsync(Id);
+    }
+    
+    private async Task ValidateAsync()
+    {
+        await MemberService.UpdateMemberAsync(Id, member!);
+        NavigationManager.NavigateTo("/members");
+    }
+
+}
