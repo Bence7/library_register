@@ -3,51 +3,34 @@
 @using LibraryClientApp.Service
 
 @inject IMemberService MemberService
+@inject NavigationManager NavManager
 
-@if (user == null)
+<h3>Add meg a felhasználó neved!</h3>
+<input type="text" @bind="UserName" />
+<button @onclick="CheckUsername">Submit</button>
+@if (UserNotFound)
 {
-    <p>Loading...</p>
-}
-else
-{
-    <h3>Add meg a felhasználó neved!</h3>
-    <div>
-        <input @bind="username" type="text" placeholder="Írd be a felhasználónevet..." />
-        <button @onclick="GetUser">Keres</button>
-    </div>
-
-    <!--
-    <h3>Kölcsönzött könyvek: @username</h3>
-    <ul>
-    @foreach (var book in user.BorrowedBooks)
-    {
-            <li>
-                Cím: @book.Title <br />
-                Kikölcsönzés dátuma: @book.BorrowDate <br />
-                Vissza kell hozni: @book.DueDate
-            </li>
-    }
-    </ul>
-    <p>Aktív kölcsönzések száma: @user.BorrowedBooks.Count</p>
-       -->
+    <p>Nem található ilyen nevű felhasználó!</p>
 }
 
 @code {
-    string username;
-    MemberModel user;
-    string errorMessage;
+    string UserName { get; set; } = "";
+    bool UserNotFound { get; set; } = false;
 
-    private async Task GetUser()
+    private async Task CheckUsername()
     {
-        try
+        if (!string.IsNullOrWhiteSpace(UserName))
         {
-            user = await MemberService.GetUserByUsernameAsync(username);
-            errorMessage = null;
-        }
-        catch (HttpRequestException)
-        {
-            errorMessage = "Nincs ilyen név a nyilvántartásban.";
-            user = null;
+            var user = await MemberService.GetUserByUsernameAsync(UserName);
+            if (user == null)
+            {
+                UserNotFound = true;
+            }
+            else
+            {
+                UserNotFound = false;
+                NavManager.NavigateTo($"/userinfo/{user.Id}");
+            }
         }
     }
 }

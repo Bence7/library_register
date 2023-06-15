@@ -9,7 +9,16 @@ namespace LibraryClientApp.Service
 
         public MemberService(HttpClient httpClient) => this._httpClient = httpClient;
 
-        public Task<MemberModel?> GetUserByUsernameAsync(string username) =>
-            this._httpClient.GetFromJsonAsync<MemberModel?>($"api/Member/Name/{username}");
+        public async Task<MemberModel?> GetUserByUsernameAsync(string username)
+        {
+            try
+            {
+                return await this._httpClient.GetFromJsonAsync<MemberModel?>($"api/Member/Name/{username}");
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -1,0 +1,32 @@
+﻿@page "/userinfo/{Id:int}"
+@using ClassLibrary.Models
+@using LibraryClientApp.Service
+@inject IRentalService RentalService
+
+@if (Rentals is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Rented books:</h3>
+    @foreach (var rental in Rentals)
+    {
+        <p>Book title: @rental.Book.Title</p>
+        <p>Rented at: @rental.RentalStartDate</p>
+        <p>Return by: @rental.RentalEndDate</p>
+        <hr />
+    }
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<RentalModel>? Rentals { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Rentals = await RentalService.GetRentalsByUserIdAsync(Id);
+    }
+}

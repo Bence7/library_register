@@ -22,5 +22,18 @@ namespace LibraryClientApp.Service
                 return null;
             }
         }
+        public async Task<List<RentalModel>> GetRentalsByUserIdAsync(int userId)
+        {
+            var response = await _httpClient.GetAsync($"api/Rental/Detailed/MemberId/{userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<List<RentalModel>>();
+            }
+            else
+            {
+                return new List<RentalModel>();
+            }
+        }
     }
 }
