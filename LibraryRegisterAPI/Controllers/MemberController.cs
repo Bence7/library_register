@@ -2,6 +2,7 @@
 using LibraryRegisterAPI.Models.Entities;
 using LibraryRegisterAPI.Models.Requests;
 using LibraryRegisterAPI.Repositories;
+using LibraryRegisterAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryRegisterAPI.Controllers
@@ -12,6 +13,7 @@ namespace LibraryRegisterAPI.Controllers
     {
         private readonly MemberRepository _repository;
         private readonly IMapper _mapper;
+        private readonly MemberService _memberService = new ();
 
         public MemberController(IEntityRepository<Member> repository, IMapper mapper)
         {
@@ -68,6 +70,11 @@ namespace LibraryRegisterAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MemberRequest member)
         {
+            if (!_memberService.IsNameValid(member.Name))
+            {
+                return BadRequest("A név érvénytelen.");
+            }
+
             var entity = _mapper.Map<Member>(member);
 
             await _repository.Add(entity);
@@ -80,7 +87,12 @@ namespace LibraryRegisterAPI.Controllers
         {
             if (id != member.Id)
             {
-                return BadRequest();
+                return BadRequest("A módosítani kívánt Member ID-je és a megadott ID különbözik.");
+            }
+
+            if (!_memberService.IsNameValid(member.Name))
+            {
+                return BadRequest("A név érvénytelen.");
             }
 
             var existingMember = await _repository.Get(id);
